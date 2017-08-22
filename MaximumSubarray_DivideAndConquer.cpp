@@ -67,13 +67,13 @@ int maximumSubarray(int low, int high, int *maxLow, int *maxHigh)
 
     midSum = maximumSubarrayAcross(low, high, &midLow, &midHigh);
 
-    if((leftSum > rightSum) && (leftSum > midSum))
+    if((leftSum >= rightSum) && (leftSum >= midSum))
     {
         *maxLow = leftLow;
         *maxHigh = leftHigh;
         return leftSum;
     }
-    else if((rightSum > leftSum) && (rightSum >  midSum))
+    else if((rightSum >= leftSum) && (rightSum >=  midSum))
     {
         *maxLow = rightLow;
         *maxHigh = rightHigh;
@@ -101,7 +101,7 @@ int main()
     int maxLow, maxHigh;
     int max = maximumSubarray(0, N-1, &maxLow, &maxHigh);
 
-    cout<<"Max Total: "<<max<<endl<<"MaxLow: "<<maxLow<<"MaxHigh: "<<maxHigh<<endl;
+    cout<<"Max Total: "<<max<<endl<<" MaxLow: "<<maxLow<<" MaxHigh: "<<maxHigh<<endl;
 
     for(int i = maxLow; i <= maxHigh; i++)
     {
