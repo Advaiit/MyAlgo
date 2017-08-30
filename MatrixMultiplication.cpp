@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int*addMatrix(int **a, int** b, int** result, int r, int c, int n)
+void addMatrix(int **a, int** b, int** result, int r, int c, int n)
 {
     for(int i = 0; i < n; i++)
     {
