@@ -2,11 +2,12 @@
 #include <iostream>
 #include <stdlib.h>
 #include <math.h>
-using namespace std;
+#include <stdio.h>
+#include <float.h>
 
-#define MIN(x, y) x > y ? y : x
+#define MIN(x, y) ((x < y) ? x : y)
 
-struct Point
+struct point
 {
     int x;
     int y;
@@ -14,20 +15,25 @@ struct Point
 
 int compareX(const void *a, const void *b)
 {
-    return ((Point *)a)->x - ((Point *)b)->x;
+    return ((point *)a)->x - ((point *)b)->x;
 }
 
 int compareY(const void *a, const void *b)
 {
-    return ((Point *)a)->y - ((Point *)b)->y;
+    return ((point *)a)->y - ((point *)b)->y;
 }
 
-float distance(Point p1, Point p2)
+float distance(point p1, point p2)
 {
-    return sqrt(((p1.x - p2.x) * (p1.x - p2.x)) + ((p1.y - p2.y) * (p1.y - p2.y)));
+    return (float)sqrt((float)((p1.x - p2.x) * (p1.x - p2.x)) + (float)((p1.y - p2.y) * (p1.y - p2.y)));
 }
 
-float StripDistance(Point strip[], int size, float d)
+float min(float x, float y)
+{
+    return (x < y ? x : y);
+}
+
+float StripDistance(point strip[], int size, float d)
 {
     float min = d;
 
@@ -46,14 +52,27 @@ float StripDistance(Point strip[], int size, float d)
     return min;
 }
 
-int closestPairUtil(Point pointArrayX[], Point pointArrayY[], int n)
+float bruteForce(point P[], int n)
 {
+    float min = FLT_MAX;
+    for (int i = 0; i < n; ++i)
+        for (int j = i+1; j < n; ++j)
+            if (distance(P[i], P[j]) < min)
+                min = distance(P[i], P[j]);
+    return min;
+}
+
+float closestPairUtil(point pointArrayX[], point pointArrayY[], int n)
+{
+    if (n <= 3)
+        return bruteForce(pointArrayX, n);
+
     int mid = n/2;
 
-    Point midPoint = pointArrayX[mid];
+    point midPoint = pointArrayX[mid];
 
-    Point pointArrayYL[mid];
-    Point pointArrayYR[n - mid];
+    point pointArrayYL[mid + 1];
+    point pointArrayYR[n - mid - 1];
     int li = 0, ri = 0;
 
     for(int i = 0; i < n; i++)
@@ -68,16 +87,16 @@ int closestPairUtil(Point pointArrayX[], Point pointArrayY[], int n)
         }
     }
 
-    float dl = closestPairUtil(pointArrayX, pointArrayYL, mid);
-    float dr = closestPairUtil(pointArrayX + mid, pointArrayYR, n - mid);
+    float dl = (float)closestPairUtil(pointArrayX, pointArrayYL, mid);
+    float dr = (float)closestPairUtil(pointArrayX + mid, pointArrayYR, n - mid);
     float d = MIN(dl, dr);
 
-    Point strip[n];
+    point strip[n];
     int si = 0;
 
     for(int i = 0; i < n; i++)
     {
-        if((pointArrayY[i].x - midPoint.x) < d)
+        if(abs(pointArrayY[i].x - midPoint.x) < d)
         {
             strip[si++] = pointArrayY[i];
         }
@@ -86,7 +105,28 @@ int closestPairUtil(Point pointArrayX[], Point pointArrayY[], int n)
     return MIN(d, StripDistance(strip, si, d));
 }
 
+float closest(point P[], int n)
+{
+    point Px[n];
+    point Py[n];
+    for (int i = 0; i < n; i++)
+    {
+        Px[i] = P[i];
+        Py[i] = P[i];
+    }
+ 
+    qsort(Px, n, sizeof(point), compareX);
+    qsort(Py, n, sizeof(point), compareY);
+ 
+    // Use recursive function closestUtil() to find the smallest distance
+    return closestPairUtil(Px, Py, n);
+}
+
 int main()
 {
+    point P[] = {{2, 3}, {12, 30}, {40, 50}, {5, 1}, {12, 10}, {3, 4}};
+    int n = sizeof(P) / sizeof(P[0]);
+    float f = closest(P, n);
+    std::cout << "The smallest distance is " << f;
     return 0;
 }
