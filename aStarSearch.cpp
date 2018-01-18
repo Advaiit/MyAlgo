@@ -25,7 +25,6 @@ class AStarSearch
 {
 public:
     AStarSearch() :
-        mMatrix(NULL),
         mGoal(),
         mSource(),
         mOpenList(),
@@ -66,7 +65,10 @@ private:
 
     inline bool isBlocked(coordinates block)
     {
-        return mMatrix ? mMatrix[block.first][block.second] : false;
+        if(mMatrix[block.first][block.second])
+            return true;
+        
+        return false;
     }
 
     inline bool isDestination(coordinates block)
@@ -77,7 +79,7 @@ private:
             return false;
     }
 
-    int **mMatrix;
+    int mMatrix[ROW][COL];
     coordinates mGoal;
     coordinates mSource;
     set<p_pair> mOpenList;
@@ -115,7 +117,14 @@ bool AStarSearch::search(int matrix[][COL], coordinates source, coordinates goal
         return false;
     }
 
-    mMatrix = (int **)matrix;
+    for(int i = 0; i < ROW; i++)
+    {
+        for(int j = 0; j < COL; j++)
+        {
+            mMatrix[i][j] = matrix[i][j];
+        }
+    }
+
     mSource = source;
     mGoal = goal;
 
