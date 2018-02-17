@@ -53,3 +53,25 @@ class PerceptronNetwork:
             print 'Final Output: '
             print activations
             print '\n'
+    
+    def confusionMatrix(self, inputSet, targetSet, labelCount) :
+
+        print np.shape(inputSet)
+
+        inputSet = np.concatenate((inputSet, -np.ones((np.shape(inputSet)[0], 1))), axis=1)
+
+        print 'Input Set'
+
+        print np.shape(inputSet)
+
+        predicted = np.dot(inputSet, self.mWeights)
+        predicted = np.where(predicted > 0, 1, 0)
+
+        confusionM = np.zeros((labelCount, labelCount))
+
+        for i in range(labelCount):
+            for j in range(labelCount):
+                confusionM[i, j] = np.sum(np.where(predicted == i, 1, 0) * np.where(targetSet == j, 1, 0))
+        
+        print confusionM
+        print np.trace(confusionM)/np.sum(confusionM)
