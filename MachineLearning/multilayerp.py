@@ -31,25 +31,25 @@ class MLPNetwork:
         #Get the dot product of weights and inputs
         self.hiddenOut = np.dot(self.mInputs, self.mWeights1)
         self.hiddenOut = 1.0 / (1.0 + np.exp(-self.mBeta * self.hiddenOut))
-        np.concatenate((self.hiddenOut, -np.ones((self.nData, 1))), axis=1)
+        self.hiddenOut = np.concatenate((self.hiddenOut, -np.ones(((self.nData, 1)))), axis=1)
 
-        outputs = self.dot(self.hiddenOut, self.mWeights2)
+        outputs = np.dot(self.hiddenOut, self.mWeights2)
 
         if self.mOutputType == 'linear':
             return outputs
         elif self.mOutputType == 'logistic':
-            return 1.0 / (1.0 + np.exp(self.mBeta * outputs))
+            return 1.0 / (1.0 + np.exp(-self.mBeta * outputs))
         else:
             print 'Invalid output type'
 
     def train(self, learningRate, iterations):
-        inputs = np.concatenate((self.mInputs, -np.ones((self.nData, 1))), axis=1)
+        self.mInputs = np.concatenate((self.mInputs, -np.ones((self.nData, 1))), axis=1)
 
         updateW1 = np.zeros((np.shape(self.mWeights1)))
         updateW2 = np.zeros((np.shape(self.mWeights2)))
 
         for n in range(iterations):
-            self.outputs = getActivations()
+            self.outputs = self.getActivations()
 
             error = 0.5 * np.sum((self.outputs - self.mTargets)**2)
 
@@ -64,10 +64,10 @@ class MLPNetwork:
                 print "Invalid output type"
                 return -1
             
-            deltaH = self.mBeta * self.hiddenOut * (1.0 - self.hiddenOut) * (np.dot(deltaO, np.transpose(self.mWeights2)))
+            deltaH = self.hiddenOut * self.mBeta * (1.0 - self.hiddenOut) * (np.dot(deltaO, np.transpose(self.mWeights2)))
 
-            updateW1 = self.learningRate * (np.dot(np.transpose(self.mInputs, deltaH[:, :-1]))) * self.mMomentum * updateW1
-            updateW2 = self.learningRate * (np.dot(np.transpose(self.hiddenOut), deltaO)) + self.mMomentum * updateW2
+            updateW1 = learningRate * (np.dot(np.transpose(self.mInputs), deltaH[:, :-1])) + self.mMomentum * updateW1
+            updateW2 = learningRate * (np.dot(np.transpose(self.hiddenOut), deltaO)) + self.mMomentum * updateW2
 
             self.mWeights1 -= updateW1
             self.mWeights2 -= updateW2
