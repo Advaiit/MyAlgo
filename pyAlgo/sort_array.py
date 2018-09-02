@@ -37,6 +37,10 @@ class Sort:
             j += 1
             k += 1
 
+    def swap(self, array, index1, index2):
+        temp = array[index1]
+        array[index1] = array[index2]
+        array[index2] = temp
 
     def mergeSort(self, array, l, r):
         m = (l + r)/2
@@ -45,6 +49,29 @@ class Sort:
             self.mergeSort(array, l, m)
             self.mergeSort(array, m+1, r)
             self.merge(array, l, m, r)
+
+    def quickSortUtil(self, array, l, r):
+        pivot = array[r]
+        sorted_array_end = l
+        itr = l
+
+        while(itr < r):
+            if array[itr] < pivot:
+                self.swap(array, itr, sorted_array_end)
+                itr += 1  
+                sorted_array_end += 1
+            else:
+                itr += 1
+
+        self.swap(array, sorted_array_end, r)
+
+        return sorted_array_end
+
+    def quickSort(self, array, l, r):
+        if(l < r):
+            p = self.quickSortUtil(array, l, r)
+            self.quickSort(array, l, p-1)
+            self.quickSort(array, p+1, r)
         
 if __name__=='__main__':
     a = [7, 4, 54, 23, 65, 34, 23, 67, 34, 67, 234 ,65, 34, 31]
@@ -53,6 +80,7 @@ if __name__=='__main__':
     sort = Sort()
     
     sort.mergeSort(a, 0, a_len-1)
+    #sort.quickSort(a, 0, a_len-1)
 
     print('Sorted Array: ')
     print(a)
