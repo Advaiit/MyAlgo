@@ -4,6 +4,7 @@ from linkedList import LinkedList
 
 class SortLinkedList:
     def __init__(self):
+        self.debug_count = 0
         return
 
     def sortedMerge(self, a, b):
@@ -51,6 +52,65 @@ class SortLinkedList:
         b = self.mergeSort(b)
         
         return self.sortedMerge(a, b)
+
+    def quickSortUtil(self, head):
+        pivot = head
+
+        if head is None or head.next is None:
+            return head, head, head
+
+        head = head.next
+        pivot.next = None
+
+        itr = head
+        prev = None
+        less_than_pivot = head
+        last_of_less_than_pivot = None
+
+        while itr is not None:
+            if itr.data < pivot.data:
+                if itr is less_than_pivot or prev is None:
+                    last_of_less_than_pivot = less_than_pivot
+                else:
+                    prev.next = itr.next
+                    itr.next = less_than_pivot
+                    less_than_pivot = itr
+                    itr = prev
+
+                    if last_of_less_than_pivot is None:
+                        last_of_less_than_pivot = less_than_pivot
+                
+            prev = itr
+            itr = itr.next
+
+                
+        listA = less_than_pivot
+        listB = last_of_less_than_pivot.next
+        last_of_less_than_pivot.next = None
+
+        return listA, listB, pivot
+
+    def quickSort(self, head):
+        if head is not None and head.next is not None:
+
+            listA, listB, pivot = self.quickSortUtil(head)
+
+            # print(self.debug_count)
+            # self.debug_count += 1
+
+            listA = self.quickSort(listA)
+            listB = self.quickSort(listB)
+
+            temp = listA
+            while temp.next is not None:
+                temp = temp.next
+
+            temp.next = pivot
+            pivot.next = listB
+
+            return listA
+        else:
+            return head
     
 if __name__ == '__main__':
     ll = LinkedList()
@@ -67,7 +127,8 @@ if __name__ == '__main__':
     print("Unsorted: ")
     ll.printList()
 
-    h = ll_sort.mergeSort(ll.getHead())
+    #h = ll_sort.mergeSort(ll.getHead())
+    h = ll_sort.quickSort(ll.getHead())
 
     print("Sorted: ")
     ll.printList(h)
