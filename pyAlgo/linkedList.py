@@ -79,7 +79,7 @@ class LinkedList:
         if self.head is None or self.head.next is None:
             return
         
-        while fast.next is not None:
+        while fast and fast.next is not None:
             slow = slow.next
             fast = fast.next
             if fast is not None:
@@ -139,6 +139,26 @@ class LinkedList:
     def setHead(self, h):
         self.head = h
 
+    def isPalindromeUtil(self, list_1, list_2):
+        
+        if list_1.next is None:
+            if list_1.data == list_2.data:
+                return list_2.next, True
+            else:
+                return list_2.next, False
+            
+        list_2, is_palindrome = self.isPalindromeUtil(list_1.next, list_2)
+
+        if list_1.data == list_2.data and is_palindrome:
+            return list_2.next, True
+        else:
+            return list_2.next, False
+
+    def isPalindrome(self):
+        _, is_p = self.isPalindromeUtil(self.head, self.head)
+        return is_p
+
+
 if __name__ == '__main__':
     ll = LinkedList()
 
@@ -146,10 +166,13 @@ if __name__ == '__main__':
     ll.append(2)
     ll.append(3)
     ll.append(4)
-    ll.push(100)
-    ll.push(200)
-    ll.push(300)
+    ll.append(3)
+    ll.append(2)
+    ll.append(1)
     ll.printList()
+
+    print('IsPalindrome: ', ll.isPalindrome())
+
     print('Reversing LinkedList')
     #ll.reverseLinkedListR()
     #ll.reverseLinkedListI()
@@ -161,4 +184,3 @@ if __name__ == '__main__':
     ll.reverseInGroups(3)
 
     ll.printList()
-    
