@@ -82,6 +82,28 @@ def binarySearchOnRotated(arr, x, l, r):
     else:
         return False
 
+#Find maximum value of Sum( i*arr[i]) with only rotations on given array allowed
+def maxRotatedSummation(array):
+    n = len(array)
+
+    summation = 0
+    single_summation = 0
+    maximum = -99999
+
+    for i in range(n):
+        summation += i * array[i]
+        single_summation += array[i]
+    
+    print("summation: ", summation, single_summation)
+
+    maximum = summation
+
+    for i in range(n):
+        summation = (summation - (single_summation - array[0])) + (array[0] * (n-1))
+        maximum = max(maximum, summation)
+        leftRotate(array, 1)
+
+    return maximum
 
 if __name__=='__main__':
     arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
@@ -93,5 +115,8 @@ if __name__=='__main__':
     i = 8
     print("BinarySearch {} on rotated: ".format(i), binarySearchOnRotated(arr, i, 0, len(arr)-1))
 
-    for i in range(1, 15):
-        print("BinarySearch {} on rotated: ".format(i), binarySearchOnRotated(arr, i, 0, len(arr)-1))
+    arr1 = [10, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    print("Max rotated: ", maxRotatedSummation(arr1))
+
+    # for i in range(1, 15):
+    #     print("BinarySearch {} on rotated: ".format(i), binarySearchOnRotated(arr, i, 0, len(arr)-1))
