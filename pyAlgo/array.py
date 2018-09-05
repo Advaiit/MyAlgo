@@ -64,26 +64,20 @@ def binarySearchOnRotated(arr, x, l, r):
                 if x == arr[r]:
                     return True
                 if x > arr[r]:
-                    print("1", m, l, r)
                     return binarySearchOnRotated(arr, x, l, m-1)
                 else:
-                    print("2", m, l, r)
                     return binarySearchOnRotated(arr, x, m+1, r)
             else:
-                print("3", m, l, r)
                 return binarySearchOnRotated(arr, x, l, m-1)
         else:
             if arr[m] < arr[l]:
                 if arr[l] == x:
                     return True
                 if arr[l] < x:
-                    print("4", m, l, r)
                     return binarySearchOnRotated(arr, x, l, m-1)
                 else:
-                    print("5")
                     return binarySearchOnRotated(arr, x, m+1, r)
             else:
-                print("6", m, l, r)
                 return binarySearchOnRotated(arr, x, m+1, r)
     else:
         return False
