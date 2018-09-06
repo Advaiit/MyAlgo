@@ -82,6 +82,19 @@ def binarySearchOnRotated(arr, x, l, r):
     else:
         return False
 
+def moveAllZerosToEnd(array):
+    n = len(array)
+    count = 0
+
+    for i in range(n):
+        if(array[i] != 0):
+            array[count] = array[i]
+            count += 1
+    
+    while count < n:
+        array[count] = 0
+        count += 1
+
 #Find maximum value of Sum( i*arr[i]) with only rotations on given array allowed
 def maxRotatedSummation(array):
     n = len(array)
@@ -117,6 +130,10 @@ if __name__=='__main__':
 
     arr1 = [10, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     print("Max rotated: ", maxRotatedSummation(arr1))
+
+    arr2 = [1, 2, 0, 4, 3, 0, 5, 0]
+    moveAllZerosToEnd(arr2)
+    print("Move all zeros: ", arr2)
 
     # for i in range(1, 15):
     #     print("BinarySearch {} on rotated: ".format(i), binarySearchOnRotated(arr, i, 0, len(arr)-1))
