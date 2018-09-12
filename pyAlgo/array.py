@@ -118,6 +118,27 @@ def maxRotatedSummation(array):
 
     return maximum
 
+def maxHammingDistance(arr):
+    maxHam = -9999
+    n = len(arr)
+
+    for i in range(1, n):
+
+        curHam = 0
+
+        for j in range(n):
+            if arr[i] != arr[j]:
+                curHam += 1
+            i += 1
+            i = i % n
+        
+        if curHam == n:
+            return n 
+
+        maxHam = max(curHam, maxHam)
+
+    return maxHam
+
 if __name__=='__main__':
     arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     printArray(arr, len(arr))
@@ -129,7 +150,12 @@ if __name__=='__main__':
     print("BinarySearch {} on rotated: ".format(i), binarySearchOnRotated(arr, i, 0, len(arr)-1))
 
     arr1 = [10, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-    print("Max rotated: ", maxRotatedSummation(arr1))
+    arr2 = [8, 3, 1, 2]
+    arr3 = [3, 2, 1]
+    print("Max rotated: ", maxRotatedSummation(arr3))
+
+    maxHamArray = [2, 4, 8, 0]
+    print("Max hamming distance: ", maxHammingDistance(maxHamArray))
 
     arr2 = [1, 2, 0, 4, 3, 0, 5, 0]
     moveAllZerosToEnd(arr2)
