@@ -27,7 +27,6 @@ class LinkedList:
         temp.next = new_node
 
     def printList(self, h=None):
-
         if h is None:
             if self.head is None:
                 print('Linked list is empty')
@@ -36,9 +35,9 @@ class LinkedList:
         cur = self.head if h is None else h
 
         while cur:
-            print 'cur: ', cur.data
-            print '=='
+            print(cur.data, end="==>")
             cur = cur.next
+        print("\n")
     
     def reverseLinkedListUtil(self, h):
         if h is None:
@@ -140,7 +139,6 @@ class LinkedList:
         self.head = h
 
     def isPalindromeUtil(self, list_1, list_2):
-        
         if list_1.next is None:
             if list_1.data == list_2.data:
                 return list_2.next, True
@@ -156,8 +154,53 @@ class LinkedList:
 
     def isPalindrome(self):
         _, is_p = self.isPalindromeUtil(self.head, self.head)
-        return is_p
+        return is_p       
+    
+    #Create new list that is union of list_1 and list_2
+    def union(self, list_1, list_2):
+        assert(list_1 is not None and list_2 is not None), "Atleast one of the list is invalid"
 
+        h_map = {}
+        temp = list_1
+
+        while temp is not None:
+            h_map[temp.data] = [1, 0] if temp.data not in h_map else [h_map[temp.data][0] + 1, 0]
+            temp = temp.next
+        
+        temp = list_2
+
+        while temp is not None:
+            h_map[temp.data] = [0, 1] if temp.data not in h_map else [h_map[temp.data][0],h_map[temp.data][1] + 1]
+            temp = temp.next
+        
+        print(h_map)
+        
+        for key in h_map:
+            maxKeyCount = max(h_map[key][0], h_map[key][1])
+            while maxKeyCount > 0:
+                self.append(key)
+                maxKeyCount -= 1
+
+    #Create new list that is intersection of list_1 and list_2
+    def intersect(self, list_1, list_2):
+        assert(list_1 is not None and list_2 is not None), "Atleast one of the list is invalid"
+
+        h_map = {}
+        temp = list_1
+
+        while temp is not None:
+            h_map[temp.data] = 1 if temp.data not in h_map else h_map[temp.data] + 1
+            temp = temp.next
+        
+        temp = list_2
+
+        while temp is not None:
+            if temp.data in h_map:
+                self.append(temp.data)
+                h_map[temp.data] -= 1
+                if temp.data == 0:
+                    del h_map[temp.data] 
+            temp = temp.next
 
 if __name__ == '__main__':
     ll = LinkedList()
@@ -169,18 +212,45 @@ if __name__ == '__main__':
     ll.append(3)
     ll.append(2)
     ll.append(1)
+
+    ll2 = LinkedList()
+
+    ll2.append(67)
+    ll2.append(76)
+    ll2.append(11)
+    ll2.append(99)
+    ll2.append(3)
+    ll2.append(4)
+    ll2.append(3)
+    ll2.append(2)
+
+    ll3 = LinkedList()
+
+    print("List 1: ")
     ll.printList()
 
-    print('IsPalindrome: ', ll.isPalindrome())
+    print("List 2: ")
+    ll2.printList()
 
-    print('Reversing LinkedList')
+    ll3.intersect(ll.getHead(), ll2.getHead())
+
+    print("List 3: ")
+    ll3.printList()
+    
+    #ll3.printList()
+
+    #ll.printList()
+
+    #print('IsPalindrome: ', ll.isPalindrome())
+
+    #print('Reversing LinkedList')
     #ll.reverseLinkedListR()
     #ll.reverseLinkedListI()
 
-    print("LL middle: ", ll.printMiddle())
+    #print("LL middle: ", ll.printMiddle())
 
     #ll.swapNodes(2, 200)
 
-    ll.reverseInGroups(3)
+    #ll.reverseInGroups(3)
 
-    ll.printList()
+    #ll.printList()
