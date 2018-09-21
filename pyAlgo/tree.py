@@ -24,6 +24,10 @@ class Tree:
 
     #Level order insert
     def insert(self, key):
+        if not self.rootNode:
+            self.rootNode = TreeNode(key)
+            return
+
         newNode = TreeNode(key)
         q = queue.Queue()
         q.put(self.rootNode)
@@ -125,6 +129,28 @@ class Tree:
                     print(l[i][j], end=" ")
             print(" ")
 
+    def isMirrorUtil(self, left, right):
+        if left is None and right is None:
+            return True
+
+        if (left is None and right is not None) or (right is None and left is not None):
+            return False
+
+        if left.data != right.data:
+            return False
+        
+        return self.isMirrorUtil(left.left, right.right) and self.isMirrorUtil(left.right, right.left)
+
+    def isMirror(self, root=None):
+        if root is None:
+            root = self.rootNode
+
+
+        if root:
+            return self.isMirrorUtil(root.left, root.right)
+        else:
+            return False
+
 
 if __name__=='__main__':
     t = Tree(0)
@@ -136,6 +162,14 @@ if __name__=='__main__':
     print("Diagonal Traversal")
 
     t.diagonalTraversal()
+
+    t2 = Tree()
+    a = [1, 2, 2, 4, 3, 3, 4, 5, 6, 7, 8, 8, 7, 6, 5]
+    
+    for i in range(len(a)):
+        t2.insert(a[i])
+
+    print("t2 is mirror: ", t2.isMirror())    
 
     # parent_array = [1, 5, 5, 2, 2, -1, 3]
 
