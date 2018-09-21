@@ -53,6 +53,17 @@ class Tree:
         print("Preorder traversal: ", end=" ")
         self.preorderTraverse(self.rootNode)
         print("\n")
+
+    def inorderTraverse(self, root):
+        if root is not None:
+            self.inorderTraverse(root.left)
+            print(root.data, end=" ")
+            self.inorderTraverse(root.right)
+
+    def inorderPrint(self):
+        print("Inorder traversal: ", end=" ")
+        self.inorderTraverse(self.rootNode)
+        print("\n")
         
     def isLeafNode(self, node):
         return node.left is None and node.right is None
@@ -92,71 +103,6 @@ class Tree:
         key_node.data = temp.data
         self.deleteLeafNode(self.rootNode, temp)
         return
-
-    # def constructFromArray(self, array):
-    #     if self.rootNode is not None:
-    #         print("root already initiated")
-        
-    #     assert(array is not None), "parent array is None"\
-
-    #     array_len = len(array)
-    #     self.rootNode = TreeNode(array[0])
-
-    #     q = queue.Queue()
-    #     q.put(self.rootNode)
-
-    #     i = 0
-    #     while q.empty() is not True:
-    #         temp = q.get()
-    #         print (temp.data)
-
-    #         left_index = (i * 2) + 1
-    #         right_index = (i * 2) + 2
-
-    #         while array[i] == -2:
-    #             i += 1
-
-    #         if left_index < array_len and array[left_index] != -2:
-    #             temp.left = TreeNode(array[left_index])
-    #             q.put(temp.left)
-            
-    #         while array[i] == -2:
-    #             i += 1
-
-    #         if right_index < array_len and array[right_index] != -2:
-    #             temp.right = TreeNode(array[right_index])
-    #             q.put(temp.right)
-            
-    #         i += 1
-
-    # def constructFromParentArray(self, parent_array):
-    #     def getParentIndex(i):
-    #         if parent_array[parent_array[i]] == -1:
-    #             return 0
-    #         else:
-    #             return parent_array[i]
-
-    #     if self.rootNode is not None:
-    #         print("root already initiated")
-
-    #     assert(parent_array is not None), "parent array is None"
-        
-    #     array_len = len(parent_array)
-    #     array_tree = [-2 for i in range(maxOfArray(parent_array) * 2 + 3)]
-
-    #     #Convert parent array into array tree
-    #     for i in range(array_len):
-    #         if parent_array[i] == -1:
-    #             array_tree[0] = i
-    #         elif array_tree[(getParentIndex(i) * 2) + 1] == -2:
-    #             array_tree[getParentIndex(i) * 2 + 1] = i
-    #         elif array_tree[(getParentIndex(i) * 2) + 2] == -2:
-    #             array_tree[getParentIndex(i) * 2 + 2] = i
-
-    #     print("Array Tree: ", array_tree)
-
-    #     #Convert array tree into linked tree
-    #     self.constructFromArray(array_tree)
     
     def putInDiagonalList(self, list, data, leftCount, rightCount):
         while list[leftCount][rightCount] != -1:
@@ -179,7 +125,6 @@ class Tree:
                     print(l[i][j], end=" ")
             print(" ")
 
-        return
 
 if __name__=='__main__':
     t = Tree(0)
