@@ -145,13 +145,31 @@ class Tree:
         if root is None:
             root = self.rootNode
 
-
         if root:
             return self.isMirrorUtil(root.left, root.right)
         else:
             return False
 
+    def iterativeInorder(self, root=None):
+        stack = []
 
+        if root is None:
+            root = self.rootNode
+        
+        assert(root), "Invalid root"
+        temp = root
+
+        while len(stack) or temp:
+            while temp:
+                stack.append(temp)
+                temp = temp.left
+            
+            temp = stack.pop()
+
+            print("{} ".format(temp.data), end=" ")
+
+            temp = temp.right
+        print("\n")
 if __name__=='__main__':
     t = Tree(0)
     t1 = Tree()
@@ -169,7 +187,9 @@ if __name__=='__main__':
     for i in range(len(a)):
         t2.insert(a[i])
 
-    print("t2 is mirror: ", t2.isMirror())    
+    print("t2 is mirror: ", t2.isMirror())
+
+    t2.iterativeInorder()
 
     # parent_array = [1, 5, 5, 2, 2, -1, 3]
 
